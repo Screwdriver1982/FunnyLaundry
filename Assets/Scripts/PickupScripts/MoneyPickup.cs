@@ -6,13 +6,16 @@ public class MoneyPickup : MonoBehaviour
 {
     public int moneyBonus;
     public int powerBonus;
+    public DestroyPickup dstrPickup;
 
     GameManager gameManager;
 
     private void Start()
     {
+        dstrPickup = gameObject.GetComponent<DestroyPickup>();
         gameManager = FindObjectOfType<GameManager>();
         gameManager.AddPickupInList(gameObject);
+
 
     }
 
@@ -20,12 +23,6 @@ public class MoneyPickup : MonoBehaviour
     {
         gameManager.AddMoney(moneyBonus);
         gameManager.AddPower(powerBonus);
-    }
-    public void DestroyPickup()
-    {
-        gameManager.RemovePickupFromList(gameObject);
-        Destroy(gameObject);
-        gameObject.SetActive(false);
     }
 
 
@@ -35,7 +32,7 @@ public class MoneyPickup : MonoBehaviour
         if (collision.gameObject.CompareTag("Basket"))
         {
             ApplyEffect();
-            DestroyPickup();
+            dstrPickup.DeletePickup();
 
         }
     }
@@ -45,7 +42,7 @@ public class MoneyPickup : MonoBehaviour
         if (collision.CompareTag("Bottom"))
         {
             gameManager.LosePickup();
-            DestroyPickup();
+            dstrPickup.DeletePickup();
         }
     }
 

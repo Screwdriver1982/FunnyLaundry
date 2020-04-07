@@ -84,6 +84,7 @@ public class GameManager : MonoBehaviour
     {
         currentLevel = levelIndex;
         levelVar = levels[levelIndex];
+        basketVar.ActiveBasket();
         backGroundSprite.sprite = levelVar.backGroundSprite;
         bossImage.sprite = levelVar.bossSprite;
         consileryImage.sprite = levelVar.consilerySprite;
@@ -212,7 +213,9 @@ public class GameManager : MonoBehaviour
         basketVar.StopBasket();
         loseFinalMoney.text = "" + money;
         loseGameWindow.gameObject.SetActive(true);
-        
+
+        ClearPickups();
+        Time.timeScale = 1;
 
     }
 
@@ -223,8 +226,19 @@ public class GameManager : MonoBehaviour
         basketVar.StopBasket();
         winFinalMoney.text = "" + money;
         winLevelWindow.gameObject.SetActive(true);
+
+        ClearPickups();
+        //Time.timeScale = 1;
     }
 
+    private void ClearPickups()
+    {
+        while (pickUpsList.Count>0)
+        {
+            pickUpsList[0].GetComponent<DestroyPickup>().DeletePickup();
+
+        }
+    }
 
     private void SetBossStage(int stage)
     {
@@ -319,6 +333,12 @@ public class GameManager : MonoBehaviour
     
     }
 
+    public void NextLevel()
+    {
+        winLevelWindow.gameObject.SetActive(false);
+        currentLevel += 1;
+        LoadLevel(currentLevel, true);
+    }
 
 
 }

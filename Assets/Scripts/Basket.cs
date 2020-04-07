@@ -37,4 +37,9 @@ public class Basket : MonoBehaviour
     {
         basketActive = false;
     }
+
+    public void ActiveBasket()
+    {
+        basketActive = true;
+    }
 }
