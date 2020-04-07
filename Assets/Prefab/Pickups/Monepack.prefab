@@ -135,7 +135,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moneyBonus: 10
-  powerBonus: 20
+  powerBonus: 1
   dstrPickup: {fileID: 0}
 --- !u!114 &2816681517970965258
 MonoBehaviour:
