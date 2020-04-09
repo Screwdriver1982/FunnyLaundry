@@ -46,7 +46,7 @@ MonoBehaviour:
   backGroundSprite: {fileID: 21300000, guid: 063c6a45492ff2d49b2eb0bb29312fd4, type: 3}
   bossSprite: {fileID: 21300000, guid: 54374125aec1dac4d81f82954ad4979a, type: 3}
   consilerySprite: {fileID: 21300000, guid: f53b59cbc210c5c418b70080b1997fa9, type: 3}
-  targetPower: 60
+  targetPower: 100
   bossPhrases:
   - I will eat you for breakfast!
   - "Okay I\u2019m watching a fucking hero here!"
@@ -71,19 +71,61 @@ MonoBehaviour:
   - {fileID: 7426785886169572434, guid: aac5c95347c7a6e4188bde04afb8556a, type: 3}
   - {fileID: 7426785886169572434, guid: 22c1519026b09124fbfb260763da99f7, type: 3}
   - {fileID: 7426785886169572434, guid: aa7091f48af09a9499dc3204f4ae2091, type: 3}
+  - {fileID: 7426785886169572434, guid: 461e64737d09b2245b94f025c861b224, type: 3}
+  - {fileID: 7426785886169572434, guid: 3c012a5ef6ab5c94686c3234305397f0, type: 3}
+  - {fileID: 7426785886169572434, guid: 41edfca9317630e4abf6456727390acd, type: 3}
+  - {fileID: 7426785886169572434, guid: ab01edcb9dd4afa42adf799e1d642036, type: 3}
+  - {fileID: 7426785886169572434, guid: fe1dfb3993e6a944e904bf9858eaa3ec, type: 3}
+  - {fileID: 7426785886169572434, guid: 307682011f27a2243b2bd2dd5395b801, type: 3}
   pickupProbStage1:
-  - 0.8
-  - 0.2
+  - 0.6666667
+  - 0.26666668
+  - 0
+  - 0.033333335
+  - 0
+  - 0
+  - 0.033333335
+  - 0
   - 0
   pickupProbStage2:
-  - 0.6
-  - 0.3
-  - 0.1
+  - 0.4
+  - 0.2
+  - 0.06666667
+  - 0.06666667
+  - 0.06666667
+  - 0.033333335
+  - 0.06666667
+  - 0.06666667
+  - 0.033333335
   pickupProbStage3:
-  - 0.4
-  - 0.4
   - 0.2
+  - 0.26666668
+  - 0.2
+  - 0.06666667
+  - 0.06666667
+  - 0.033333335
+  - 0.06666667
+  - 0.06666667
+  - 0.033333335
   pickupProbStage4:
+  - 0.13333334
+  - 0.33333334
   - 0.2
+  - 0.06666667
+  - 0.06666667
+  - 0.033333335
+  - 0.06666667
+  - 0.06666667
+  - 0.033333335
+  bossBombNumber: 00000000010000000200000003000000
+  bossBomb:
+  - {fileID: 7426785886169572434, guid: 0fdb3b5fc83fc5044b5fa9fae355bf3b, type: 3}
+  consileryHealthNumber: 030000000300000003000000
+  ConsileryDrop:
+  - {fileID: 7426785886169572434, guid: 360613aa1cf52d041897fdb3e4943548, type: 3}
+  - {fileID: 7426785886169572434, guid: b596fcd5ef736f24b8517a511dc69350, type: 3}
+  - {fileID: 7426785886169572434, guid: 43da9a46c05f3164c81fa0e99570d916, type: 3}
+  healthHelp:
+  - 0.75
   - 0.5
-  - 0.3
+  - 0.25

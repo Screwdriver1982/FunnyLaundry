@@ -19,6 +19,11 @@ public class Level : MonoBehaviour
     public float[] pickupProbStage2;
     public float[] pickupProbStage3;
     public float[] pickupProbStage4;
+    public int[] bossBombNumber;
+    public GameObject[] bossBomb;
+    public int[] consileryHealthNumber;
+    public GameObject[] ConsileryDrop;
+    public float[] healthHelp;
 
 
     // Start is called before the first frame update

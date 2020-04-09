@@ -13,25 +13,37 @@ public class GameManager : MonoBehaviour
     public Text consileryText;
     public Level[] levels;
     public float startX;
-    public int money;
     public Text moneyTxt;
-    public float life;
     public float maxLife;
     public GameObject lifeBar;
-    public float power;
-    
+    public int alarmMaxClock;
+    public float alarmBlinkTime;
+    public int winGold;
+    public Color alarmColor;
+    public Color baseMoneyColor;
+    public Color baseBorderColor;
+    public Color alarmBorderColor;
+    public SpriteRenderer rightBorder;
+    public SpriteRenderer leftBorder;
+    public SpriteRenderer bottomBorder;
+
     public GameObject powerBar;
     public List<GameObject> pickUpsList;
-    public int losePickupLife;
     public float safeModeTime;
     public Vector3 pickupGenerator;
+    public Vector3 bossGenerator;
+    public Vector3 consileryGenerator;
     public Text  loseFinalMoney;
     public Image loseGameWindow;
-    public Text winFinalMoney;
+    public Image goldImg;
     public Image winLevelWindow;
-    
+    public Text winFinalMoney;
+    public Text winFinalGold;
 
-
+    int money;
+    int gold;
+    float life;
+    float power;
     float maxPower;
     int currentLevel;
     int consPhraseI;
@@ -46,6 +58,12 @@ public class GameManager : MonoBehaviour
     float delay;
     int chosenNumber;
     bool pauseActive = false;
+    bool alarmOn = false;
+    int alarmClock;
+    int consileryStage = 0;
+
+
+
 
 
     // Start is called before the first frame update
@@ -69,6 +87,10 @@ public class GameManager : MonoBehaviour
                 //выключить паузу
                 Time.timeScale = 1;
                 pauseActive = false;
+                if (alarmOn)
+                {
+                    Alarm();
+                }
             }
             else
             {
@@ -98,11 +120,17 @@ public class GameManager : MonoBehaviour
             ChangeLife(maxLife - life);
         }
 
+        //зануляем деньги
+        money = 0;
+
+        //выключаем аларм если он был
+        alarmOn = false;
+
         levelPickups = levelVar.pickupTable;
         levelStage = 1;
                 
-        Invoke("ConsilerySay", 0.5f);
-        Invoke("BossSay", 3.5f);
+        Invoke(nameof(ConsilerySay), 0.5f);
+        Invoke(nameof(BossSay), 3.5f);
         StageDrop(1);
 
     }
@@ -111,7 +139,7 @@ public class GameManager : MonoBehaviour
     {
         consileryImage.gameObject.SetActive(true);
         consileryText.text = levelVar.consileryPhrases[consPhraseI];
-        Invoke("ConsileryOff", 3f);
+        Invoke(nameof(ConsileryOff), 3f);
 
     }
 
@@ -119,7 +147,7 @@ public class GameManager : MonoBehaviour
     {
         bossImage.gameObject.SetActive(true);
         bossText.text = levelVar.bossPhrases[bossPhraseI];
-        Invoke("BossOff", 3f);
+        Invoke(nameof(BossOff), 3f);
 
     }
 
@@ -138,17 +166,43 @@ public class GameManager : MonoBehaviour
     {
         money += bonusMoney;
         moneyTxt.text = "" + money;
+
+        if (money < 0 && !alarmOn)
+        {
+            alarmOn = true;
+            Alarm();
+        }
+        else if(money >=0 && alarmOn)
+        {
+            alarmOn = false;
+        }
+
     }
 
     public void ChangeLife(float bonusLife)
     {
         life += bonusLife;
         lifeBar.transform.localScale = new Vector3(1, life / maxLife, 1);
+
         if (life <= 0)
         {
             LoseGame();
         }
+
+        if (levelVar.healthHelp.Length > consileryStage)
+        {
+            if (life / maxLife <= levelVar.healthHelp[consileryStage])
+            {
+                ConsileryHealthDrop(consileryStage);
+                consileryStage += 1;
+            }
+
+        }
+        
+        
     }
+
+    
 
     public void AddPower(float bonusPower)
     {
@@ -184,7 +238,7 @@ public class GameManager : MonoBehaviour
         pickUpsList.Remove(pickup);
     }
 
-    public void LosePickup()
+    public void LosePickup(int losePickupLife)
     {
         if (!safeMode)
         {
@@ -195,9 +249,9 @@ public class GameManager : MonoBehaviour
 
     public void SafeModeOn()
     {
-        CancelInvoke("SafeModeOff");
+        CancelInvoke(nameof(SafeModeOff));
         safeMode = true;
-        Invoke("SafeModeOff", safeModeTime);
+        Invoke(nameof(SafeModeOff), safeModeTime);
                 
     }
 
@@ -212,6 +266,7 @@ public class GameManager : MonoBehaviour
         CancelInvoke();
         basketVar.StopBasket();
         loseFinalMoney.text = "" + money;
+        ExchangeMoney(money, 0);
         loseGameWindow.gameObject.SetActive(true);
 
         ClearPickups();
@@ -225,10 +280,30 @@ public class GameManager : MonoBehaviour
         CancelInvoke();
         basketVar.StopBasket();
         winFinalMoney.text = "" + money;
+        ExchangeMoney(money, 1);
+        
         winLevelWindow.gameObject.SetActive(true);
 
         ClearPickups();
-        //Time.timeScale = 1;
+        Time.timeScale = 1;
+    }
+
+    private void ExchangeMoney(int money, int winOrLose)
+    {
+        gold = winOrLose * winGold;
+
+        if (money >= 0)
+        {
+            gold += Mathf.FloorToInt(money / 100);
+        }
+
+        winFinalGold.text = "" + gold;
+        goldImg.gameObject.SetActive(true);
+
+        int playerGold = PlayerPrefs.GetInt("PlayerGold",0);
+        playerGold += gold;
+        PlayerPrefs.SetInt("PlayerGold", playerGold);
+
     }
 
     private void ClearPickups()
@@ -246,6 +321,8 @@ public class GameManager : MonoBehaviour
         bossPhraseI = stage-1;
         BossSay();
         StageDrop(stage);
+
+        BossBombDrop(stage-1);
 
     }
 
@@ -293,21 +370,19 @@ public class GameManager : MonoBehaviour
             stagePobability[j] = stagePobability[j] / wheightSum;
         }
 
-        CancelInvoke("PickupDrop");
-        InvokeRepeating("PickupDrop", delay, pickupCreatePeriod);
+        CancelInvoke(nameof(PickupDrop));
+        InvokeRepeating(nameof(PickupDrop), delay, pickupCreatePeriod);
 
     }
 
     private void PickupDrop()
     {
-        float dice = Random.Range(0f, 1f);
-
-        Debug.Log(dice);
+        float dice = Random.value;
 
         float baseProbability = 0f;
         float directionAngel = Random.Range(Mathf.PI, Mathf.PI * 2);
 
-        Debug.Log(directionAngel);
+       
 
         for (int i = 0; i < stagePobability.Length; i++)
         {
@@ -315,7 +390,6 @@ public class GameManager : MonoBehaviour
             if (baseProbability >= dice)
             {
                 chosenNumber = i;
-                Debug.Log(baseProbability);
                 break;
             }
         
@@ -327,18 +401,95 @@ public class GameManager : MonoBehaviour
         Rigidbody2D rb = newPickup.GetComponent<Rigidbody2D>();
         rb.velocity = new Vector3(Mathf.Cos(directionAngel), Mathf.Sin(directionAngel), 0) * 0.5f;
         rb.gravityScale = Random.Range(0.5f,1.5f)*gravity;
-        Debug.Log(rb.velocity);
-
-    
-    
+     
     }
+
+
+    private void BossBombDrop(int stage)
+    {
+        for (int i = 0; i < levelVar.bossBombNumber[stage]; i++)
+        {
+            int dropNumber = Random.Range(0,levelVar.bossBomb.Length-1);
+            float directionAngel = Random.Range(Mathf.PI, 7 * Mathf.PI / 6);
+            GameObject newBomb = Instantiate(levelVar.bossBomb[dropNumber], bossGenerator, Quaternion.identity);
+            Rigidbody2D rb = newBomb.GetComponent<Rigidbody2D>();
+            rb.velocity = new Vector3(Mathf.Cos(directionAngel), Mathf.Sin(directionAngel), 0)*2;
+            
+        }
+        
+    }
+
+    private void ConsileryHealthDrop(int helpNum)
+    {
+        for (int i = 0; i < levelVar.consileryHealthNumber[helpNum]; i++)
+        {
+            int dropNumber = Random.Range(0, levelVar.ConsileryDrop.Length - 1);
+            float directionAngel = Random.Range(7 * Mathf.PI / 6, 2 * Mathf.PI);
+            GameObject newDrop = Instantiate(levelVar.ConsileryDrop[dropNumber], consileryGenerator, Quaternion.identity);
+            Rigidbody2D rb = newDrop.GetComponent<Rigidbody2D>();
+            rb.velocity = new Vector3(Mathf.Cos(directionAngel), Mathf.Sin(directionAngel), 0) * 2;
+
+        }
+
+    }
+
+
 
     public void NextLevel()
     {
         winLevelWindow.gameObject.SetActive(false);
+        loseGameWindow.gameObject.SetActive(false);
+        goldImg.gameObject.SetActive(false);
         currentLevel += 1;
         LoadLevel(currentLevel, true);
     }
 
+    public void Alarm()
+    {
 
+        if (alarmOn)
+        {
+            if (!pauseActive)
+            {
+                
+                alarmClock += 1;
+
+                if (moneyTxt.color == alarmColor)
+                {
+                    moneyTxt.color = baseMoneyColor;
+                    rightBorder.color = baseBorderColor;
+                    leftBorder.color = baseBorderColor;
+                    bottomBorder.color = baseBorderColor;
+                }
+                else
+                {
+                    moneyTxt.color = alarmColor;
+                    rightBorder.color = alarmBorderColor;
+                    leftBorder.color = alarmBorderColor;
+                    bottomBorder.color = alarmBorderColor;
+                }
+                
+
+                if (alarmClock >= alarmMaxClock)
+                {
+                    LoseGame();
+                }
+                else
+                {
+                    Invoke(nameof(Alarm), alarmBlinkTime);
+                }
+            }
+            else
+            {
+                CancelInvoke(nameof(Alarm));
+            }
+
+        }
+        else
+        {
+            alarmClock = 0;
+            moneyTxt.color = baseMoneyColor;
+        }
+        
+    }
 }

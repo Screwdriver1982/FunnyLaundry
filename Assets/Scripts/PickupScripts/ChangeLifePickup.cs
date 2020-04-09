@@ -2,13 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
 [RequireComponent(typeof(DestroyPickup))]
-public class MoneyPickup : MonoBehaviour
+public class ChangeLifePickup : MonoBehaviour
 {
-    public int moneyBonus;
-    public int powerBonus;
-    public int loseLifeBottom;
+    public int lifeBonus;
     DestroyPickup dstrPickup;
 
     GameManager gameManager;
@@ -24,8 +21,7 @@ public class MoneyPickup : MonoBehaviour
 
     private void ApplyEffect()
     {
-        gameManager.AddMoney(moneyBonus);
-        gameManager.AddPower(powerBonus);
+        gameManager.ChangeLife(lifeBonus);
     }
 
 
@@ -44,10 +40,8 @@ public class MoneyPickup : MonoBehaviour
     {
         if (collision.CompareTag("Bottom"))
         {
-            gameManager.LosePickup(loseLifeBottom);
             dstrPickup.DeletePickup();
         }
     }
-
 
 }

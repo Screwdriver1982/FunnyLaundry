@@ -12,10 +12,10 @@ GameObject:
   - component: {fileID: 6375637966158088346}
   - component: {fileID: 3642750835549443583}
   - component: {fileID: -8051047105324891579}
-  - component: {fileID: 440572490910449697}
-  - component: {fileID: 3378286853446183620}
+  - component: {fileID: 5345171685263542749}
+  - component: {fileID: -851839853002849018}
   m_Layer: 10
-  m_Name: Moneybag
+  m_Name: LifeMedium
   m_TagString: Pickups
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: b773a8f4af955f24fa0a8d9af78c48b2, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 96a816348f84f9043bf44f0557c123dd, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -98,9 +98,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.0017929971, y: 0.008965194}
+  m_Offset: {x: 0.0021610856, y: 0.022639751}
   serializedVersion: 2
-  m_Radius: 0.22489771
+  m_Radius: 0.24648768
 --- !u!50 &-8051047105324891579
 Rigidbody2D:
   serializedVersion: 4
@@ -122,22 +122,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &440572490910449697
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7426785886169572434}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d78a5a99a8eda7847a09df5c69359a10, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moneyBonus: 30
-  powerBonus: 1
-  loseLifeBottom: -10
---- !u!114 &3378286853446183620
+--- !u!114 &5345171685263542749
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -149,3 +134,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b8c5cf522b04dc46804d213b2f9707e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-851839853002849018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7426785886169572434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e691888bd637bd5479ac8f159b4a5dc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lifeBonus: 7

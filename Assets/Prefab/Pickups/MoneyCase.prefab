@@ -136,7 +136,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moneyBonus: 50
   powerBonus: 1
-  dstrPickup: {fileID: 0}
+  loseLifeBottom: -10
 --- !u!114 &1473745166989727730
 MonoBehaviour:
   m_ObjectHideFlags: 0
