@@ -39,9 +39,13 @@ public class GameManager : MonoBehaviour
     public Image winLevelWindow;
     public Text winFinalMoney;
     public Text winFinalGold;
+    public Text shieldsTxt;
+    public Text heartsTxt;
 
     int money;
     int gold;
+    int shields;
+    int hearts;
     float life;
     float power;
     float maxPower;
@@ -61,6 +65,10 @@ public class GameManager : MonoBehaviour
     bool alarmOn = false;
     int alarmClock;
     int consileryStage = 0;
+    int useShieldsNum;
+    int useHeartsNum;
+
+
 
 
 
@@ -70,11 +78,54 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-
+        Transporter trnsprt = FindObjectOfType<Transporter>();
+        currentLevel = trnsprt.playerChosenLevel;
         // грузим левел и устанавливаем жизнь в максимум
         LoadLevel(currentLevel, true);
-        
+
+        //Invoke(nameof(PrintName), 3f);
+        //Coroutine PrintName = StartCoroutine(PrintNameCoroutine());
+        //StartCoroutine(PrintNameEndlessly(3f, 1f));
     }
+
+
+    //void PrintName()
+    //{
+    //    Debug.Log("Hello, Alex!");
+    //}
+
+    //IEnumerator PrintNameCoroutine()
+    //{
+    //    yield return new WaitForSeconds(3); //ждет 3 секунды, потом идет к следующей строчке
+    //    Debug.Log("Hello from Coroutine!");
+
+
+    //}
+
+    //IEnumerator PrintNameEndlessly(float delay, float rate)
+    //{
+    //    yield return new WaitForSeconds(delay);
+
+    //    while (true)
+    //    {
+    //        Debug.Log("Endless name!");
+    //        yield return new WaitForSeconds(rate);
+    //    }
+        
+
+    
+    //}
+
+    //IEnumerator CustomUpdate()
+    //{
+    //    while (true)
+    //    {
+    //        Debug.Log("Custom update");
+    //        yield return null;
+
+    //    }
+
+    //}
 
 
     // Update is called once per frame
@@ -100,17 +151,30 @@ public class GameManager : MonoBehaviour
             }
 
         }
+
+        if (Input.GetKeyDown(KeyCode.Keypad1))
+        {
+            UseShield();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Keypad2))
+        {
+            UseHeart();
+        }
+
     }
 
     void LoadLevel(int levelIndex, bool setMaxLife)
     {
+
         currentLevel = levelIndex;
         levelVar = levels[levelIndex];
         basketVar.ActiveBasket();
         backGroundSprite.sprite = levelVar.backGroundSprite;
         bossImage.sprite = levelVar.bossSprite;
         consileryImage.sprite = levelVar.consilerySprite;
-
+        GetCurrency();
+        CurrencyTxtUpdate();
         // обнуляем силу
         maxPower = levelVar.targetPower;
         AddPower(-power);
@@ -122,6 +186,8 @@ public class GameManager : MonoBehaviour
 
         //зануляем деньги
         money = 0;
+        useHeartsNum = 0;
+        useShieldsNum = 0;
 
         //выключаем аларм если он был
         alarmOn = false;
@@ -181,7 +247,7 @@ public class GameManager : MonoBehaviour
 
     public void ChangeLife(float bonusLife)
     {
-        life += bonusLife;
+        life = Mathf.Clamp(life + bonusLife, -1, maxLife);
         lifeBar.transform.localScale = new Vector3(1, life / maxLife, 1);
 
         if (life <= 0)
@@ -206,7 +272,8 @@ public class GameManager : MonoBehaviour
 
     public void AddPower(float bonusPower)
     {
-        power += bonusPower;
+        power = Mathf.Clamp(power + bonusPower, 0, maxPower);
+
         powerBar.transform.localScale = new Vector3(1, power / maxPower, 1);
 
         if (power >= maxPower)
@@ -267,6 +334,7 @@ public class GameManager : MonoBehaviour
         basketVar.StopBasket();
         loseFinalMoney.text = "" + money;
         ExchangeMoney(money, 0);
+        HeartsShieldsChanges(useShieldsNum, useHeartsNum);
         loseGameWindow.gameObject.SetActive(true);
 
         ClearPickups();
@@ -281,7 +349,7 @@ public class GameManager : MonoBehaviour
         basketVar.StopBasket();
         winFinalMoney.text = "" + money;
         ExchangeMoney(money, 1);
-        
+        HeartsShieldsChanges(useShieldsNum, useHeartsNum);
         winLevelWindow.gameObject.SetActive(true);
 
         ClearPickups();
@@ -492,4 +560,59 @@ public class GameManager : MonoBehaviour
         }
         
     }
+
+    public void GetCurrency()
+    {
+        gold = PlayerPrefs.GetInt("PlayerGold", 0);
+        shields = PlayerPrefs.GetInt("PlayerShields", 0);
+        hearts = PlayerPrefs.GetInt("PlayerHearts", 0);
+    }
+
+    public void CurrencyTxtUpdate()
+    {
+        shieldsTxt.text = "" + shields;
+        heartsTxt.text = "" + hearts;
+    }
+
+    void UseShield()
+    {
+        if (shields > 0 && !pauseActive)
+        {
+            shields -= 1;
+            SafeModeOn();
+            CurrencyTxtUpdate();
+            useShieldsNum += 1;
+        }
+    
+    }
+
+    void UseHeart()
+    {
+        if (hearts > 0 && !pauseActive)
+        {
+            hearts -= 1;
+            ConsileryHealthDrop(1);
+            CurrencyTxtUpdate();
+            useHeartsNum += 1;
+        }
+
+    }
+
+    void HeartsShieldsChanges(int difShields, int difHearts)
+    {
+        if (difShields != 0)
+        {
+            PlayerPrefs.SetInt("PlayerShields", shields);
+        }
+
+        if (difHearts != 0)
+        {
+            PlayerPrefs.SetInt("PlayerHearts", hearts);
+
+
+        }
+    }
+
+
+
 }

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8149162045769891108}
   - component: {fileID: 6212891560515724297}
   m_Layer: 0
-  m_Name: Level-1
+  m_Name: Chicago
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -43,8 +43,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55988400a8c2cf547a691990ad29c252, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  backGroundSprite: {fileID: 21300000, guid: 063c6a45492ff2d49b2eb0bb29312fd4, type: 3}
-  bossSprite: {fileID: 21300000, guid: 54374125aec1dac4d81f82954ad4979a, type: 3}
+  backGroundSprite: {fileID: 21300000, guid: c99128fa57fa7724d8264247884ee764, type: 3}
+  bossSprite: {fileID: 21300000, guid: efb7ca7061ac6b646b22a64d9052dba5, type: 3}
   consilerySprite: {fileID: 21300000, guid: f53b59cbc210c5c418b70080b1997fa9, type: 3}
   targetPower: 100
   bossPhrases:
