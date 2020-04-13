@@ -12,6 +12,7 @@ public class AccountScript : MonoBehaviour
     public Text heartsTxt;
     public Text shieldPriceTxt;
     public Text heartsPriceTxt;
+    public AudioClip goldSpend;
 
     public int shieldPrice;
     public int heartsPrice;
@@ -19,10 +20,12 @@ public class AccountScript : MonoBehaviour
     int playerGold;
     int playerShields;
     int playerHearts;
+    AudioSource audio;
 
     // Start is called before the first frame update
     void Start()
     {
+        audio = GetComponent<AudioSource>();
         GetCurrency();
         CurrencyTxtUpdate();
         ShopTxtUpdate();
@@ -91,6 +94,7 @@ public class AccountScript : MonoBehaviour
         if (shieldPrice <= playerGold)
         { 
             CurrencyChanges(-shieldPrice, 1, 0);
+            SoundPlay(goldSpend);
         }
         
     }
@@ -100,8 +104,12 @@ public class AccountScript : MonoBehaviour
         if (heartsPrice <= playerGold)
         {
             CurrencyChanges(-heartsPrice, 0, 1);
+            SoundPlay(goldSpend);
         }
     }
 
-
+    public void SoundPlay(AudioClip sound)
+    {
+        audio.PlayOneShot(sound);
+    }
 }

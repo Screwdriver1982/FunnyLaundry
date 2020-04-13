@@ -41,6 +41,10 @@ public class GameManager : MonoBehaviour
     public Text winFinalGold;
     public Text shieldsTxt;
     public Text heartsTxt;
+    public AudioSource musicPlayer;
+    public AudioClip loseSound;
+    public AudioClip winSound;
+    public AudioSource soundPlayer;
 
     int money;
     int gold;
@@ -67,6 +71,9 @@ public class GameManager : MonoBehaviour
     int consileryStage = 0;
     int useShieldsNum;
     int useHeartsNum;
+    int playerMaxLvl;
+    ScenesLoader scenesLoaderVar;
+
 
 
 
@@ -78,10 +85,14 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        soundPlayer = gameObject.GetComponent<AudioSource>();
+        scenesLoaderVar = FindObjectOfType<ScenesLoader>();
         Transporter trnsprt = FindObjectOfType<Transporter>();
         currentLevel = trnsprt.playerChosenLevel;
+        Destroy(trnsprt);
         // грузим левел и устанавливаем жизнь в максимум
         LoadLevel(currentLevel, true);
+        playerMaxLvl = PlayerPrefs.GetInt("PlayerMaxLvl", 0);
 
         //Invoke(nameof(PrintName), 3f);
         //Coroutine PrintName = StartCoroutine(PrintNameCoroutine());
@@ -152,52 +163,68 @@ public class GameManager : MonoBehaviour
 
         }
 
-        if (Input.GetKeyDown(KeyCode.Keypad1))
+        if (Input.GetKeyDown(KeyCode.Keypad1) || Input.GetKeyDown(KeyCode.Alpha1))
         {
             UseShield();
         }
 
-        if (Input.GetKeyDown(KeyCode.Keypad2))
+        if (Input.GetKeyDown(KeyCode.Keypad2) || Input.GetKeyDown(KeyCode.Alpha2))
         {
             UseHeart();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            AddPower(100);
         }
 
     }
 
     void LoadLevel(int levelIndex, bool setMaxLife)
     {
-
-        currentLevel = levelIndex;
-        levelVar = levels[levelIndex];
-        basketVar.ActiveBasket();
-        backGroundSprite.sprite = levelVar.backGroundSprite;
-        bossImage.sprite = levelVar.bossSprite;
-        consileryImage.sprite = levelVar.consilerySprite;
-        GetCurrency();
-        CurrencyTxtUpdate();
-        // обнуляем силу
-        maxPower = levelVar.targetPower;
-        AddPower(-power);
-        //ставим жизнь в максимум или сохраняем
-        if (setMaxLife)
+        if (levels.Length <= levelIndex)
         {
-            ChangeLife(maxLife - life);
+            scenesLoaderVar.LoadStartScene();
         }
+        else
+        {
+            currentLevel = levelIndex;
+            levelVar = levels[levelIndex];
+            basketVar.ActiveBasket();
+            backGroundSprite.sprite = levelVar.backGroundSprite;
+            bossImage.sprite = levelVar.bossSprite;
+            consileryImage.sprite = levelVar.consilerySprite;
 
-        //зануляем деньги
-        money = 0;
-        useHeartsNum = 0;
-        useShieldsNum = 0;
+            musicPlayer.Stop();
+            musicPlayer.PlayOneShot(levelVar.levelTheme);
 
-        //выключаем аларм если он был
-        alarmOn = false;
+            GetCurrency();
+            CurrencyTxtUpdate();
+            // обнуляем силу
+            maxPower = levelVar.targetPower;
+            AddPower(-power);
+            //ставим жизнь в максимум или сохраняем
+            if (setMaxLife)
+            {
+                ChangeLife(maxLife - life);
+            }
 
-        levelPickups = levelVar.pickupTable;
-        levelStage = 1;
-                
-        Invoke(nameof(ConsilerySay), 0.5f);
-        Invoke(nameof(BossSay), 3.5f);
-        StageDrop(1);
+            //зануляем деньги
+            money = 0;
+            useHeartsNum = 0;
+            useShieldsNum = 0;
+
+            //выключаем аларм если он был
+            alarmOn = false;
+
+            levelPickups = levelVar.pickupTable;
+            levelStage = 1;
+
+            Invoke(nameof(ConsilerySay), 0.5f);
+            Invoke(nameof(BossSay), 3.5f);
+            StageDrop(1);
+        }
+        
 
     }
 
@@ -336,6 +363,7 @@ public class GameManager : MonoBehaviour
         ExchangeMoney(money, 0);
         HeartsShieldsChanges(useShieldsNum, useHeartsNum);
         loseGameWindow.gameObject.SetActive(true);
+        PlaySound(loseSound);
 
         ClearPickups();
         Time.timeScale = 1;
@@ -350,8 +378,16 @@ public class GameManager : MonoBehaviour
         winFinalMoney.text = "" + money;
         ExchangeMoney(money, 1);
         HeartsShieldsChanges(useShieldsNum, useHeartsNum);
-        winLevelWindow.gameObject.SetActive(true);
 
+        if (playerMaxLvl < currentLevel)
+        {
+            playerMaxLvl = currentLevel;
+            PlayerPrefs.SetInt("PlayerMaxLvl", playerMaxLvl);
+        }
+
+
+        winLevelWindow.gameObject.SetActive(true);
+        PlaySound(winSound);
         ClearPickups();
         Time.timeScale = 1;
     }
@@ -613,6 +649,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
+    public void PlaySound(AudioClip sound)
+    {
+        soundPlayer.PlayOneShot(sound);
+    }
+    
 
 }

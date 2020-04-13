@@ -149,3 +149,7 @@ MonoBehaviour:
   moneyBonus: -300
   powerBonus: 7
   loseLifeBottom: -20
+  pickupSound: {fileID: 8300000, guid: 327030448184eb84aa1428969b86e974, type: 3}
+  bottomSound: {fileID: 8300000, guid: ee9abfb1cacaaec46b86abf88901b408, type: 3}
+  basketDestroyFX: {fileID: 100000, guid: 3156817f64ec68948ad6bb26569b9ef5, type: 3}
+  bottomDestroyFX: {fileID: 100006, guid: bcaff8fc36e95584bb27cc3cf7c6cb14, type: 3}

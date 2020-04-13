@@ -6,8 +6,12 @@ using UnityEngine;
 public class ChangeLifePickup : MonoBehaviour
 {
     public int lifeBonus;
-    DestroyPickup dstrPickup;
+    public AudioClip pickupSound;
+    public AudioClip bottomSound;
+    public GameObject basketDestroyFX;
+    public GameObject bottomDestroyFX;
 
+    DestroyPickup dstrPickup;
     GameManager gameManager;
 
     private void Start()
@@ -32,6 +36,19 @@ public class ChangeLifePickup : MonoBehaviour
         {
             ApplyEffect();
             dstrPickup.DeletePickup();
+            gameManager.PlaySound(pickupSound);
+
+            if (basketDestroyFX != null)
+            {
+                Vector3 fxPosition = transform.position;
+
+                //запомнили созданный объект, чтобы потом его прибить
+                GameObject newObject = Instantiate(basketDestroyFX, fxPosition, Quaternion.identity);
+
+                //уничтожить через N секунд
+                Destroy(newObject, 5f);
+            }
+
 
         }
     }
@@ -40,7 +57,24 @@ public class ChangeLifePickup : MonoBehaviour
     {
         if (collision.CompareTag("Bottom"))
         {
+
             dstrPickup.DeletePickup();
+            if (bottomSound != null)
+            {
+                gameManager.PlaySound(bottomSound);
+            }
+
+            if (bottomDestroyFX != null)
+            {
+                Vector3 fxPosition = transform.position;
+
+                //запомнили созданный объект, чтобы потом его прибить
+                GameObject newObject = Instantiate(bottomDestroyFX, fxPosition, Quaternion.identity);
+
+                //уничтожить через N секунд
+                Destroy(newObject, 5f);
+            }
+
         }
     }
 

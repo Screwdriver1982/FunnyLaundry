@@ -16,4 +16,10 @@ public class DestroyPickup : MonoBehaviour
         gameManager.RemovePickupFromList(gameObject);
         Destroy(gameObject);
     }
+    
 }
+
+
+
+
+

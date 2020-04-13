@@ -1,0 +1,133 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7749799541053840470
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8149162045769891108}
+  - component: {fileID: 6212891560515724297}
+  m_Layer: 0
+  m_Name: San Francisco
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8149162045769891108
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7749799541053840470}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 302.27405, y: 947.19794, z: -239.49275}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6212891560515724297
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7749799541053840470}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55988400a8c2cf547a691990ad29c252, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  backGroundSprite: {fileID: 21300000, guid: 62e87886aed32fb44a8baf4c31107e64, type: 3}
+  bossSprite: {fileID: 21300000, guid: 7fed42ee814c14242b6f32ca5e059cf8, type: 3}
+  consilerySprite: {fileID: 21300000, guid: f53b59cbc210c5c418b70080b1997fa9, type: 3}
+  targetPower: 100
+  bossPhrases:
+  - I will eat you for breakfast!
+  - Listen tourist, go get on a tram, buy a couple of postcards and get out of my
+    city.
+  - A! I saw you! You sold your ass in Chinatown.
+  - Meet me on the bridge, you bastard! Just you and me!
+  consileryPhrases:
+  - Be carefull! We don't need troubles.
+  - Yes, we underestimated him!
+  - And who said that would be easy?
+  - Stay calm and carry on!
+  gravityForce:
+  - 0.1
+  - 0.15
+  - 0.2
+  - 0.25
+  pickupCreatePeriod:
+  - 1
+  - 1.1
+  - 1.2
+  - 1.3
+  pickupTable:
+  - {fileID: 7426785886169572434, guid: aac5c95347c7a6e4188bde04afb8556a, type: 3}
+  - {fileID: 7426785886169572434, guid: 22c1519026b09124fbfb260763da99f7, type: 3}
+  - {fileID: 7426785886169572434, guid: aa7091f48af09a9499dc3204f4ae2091, type: 3}
+  - {fileID: 7426785886169572434, guid: 461e64737d09b2245b94f025c861b224, type: 3}
+  - {fileID: 7426785886169572434, guid: 3c012a5ef6ab5c94686c3234305397f0, type: 3}
+  - {fileID: 7426785886169572434, guid: 41edfca9317630e4abf6456727390acd, type: 3}
+  - {fileID: 7426785886169572434, guid: ab01edcb9dd4afa42adf799e1d642036, type: 3}
+  - {fileID: 7426785886169572434, guid: fe1dfb3993e6a944e904bf9858eaa3ec, type: 3}
+  - {fileID: 7426785886169572434, guid: 307682011f27a2243b2bd2dd5395b801, type: 3}
+  pickupProbStage1:
+  - 0.6666667
+  - 0.26666668
+  - 0
+  - 0.033333335
+  - 0
+  - 0
+  - 0.033333335
+  - 0
+  - 0
+  pickupProbStage2:
+  - 0.4
+  - 0.2
+  - 0.06666667
+  - 0.06666667
+  - 0.06666667
+  - 0.033333335
+  - 0.06666667
+  - 0.06666667
+  - 0.033333335
+  pickupProbStage3:
+  - 0.2
+  - 0.26666668
+  - 0.2
+  - 0.06666667
+  - 0.06666667
+  - 0.033333335
+  - 0.06666667
+  - 0.06666667
+  - 0.033333335
+  pickupProbStage4:
+  - 0.13333334
+  - 0.33333334
+  - 0.2
+  - 0.06666667
+  - 0.06666667
+  - 0.033333335
+  - 0.06666667
+  - 0.06666667
+  - 0.033333335
+  bossBombNumber: 00000000010000000200000003000000
+  bossBomb:
+  - {fileID: 7426785886169572434, guid: 0fdb3b5fc83fc5044b5fa9fae355bf3b, type: 3}
+  consileryHealthNumber: 030000000300000003000000
+  ConsileryDrop:
+  - {fileID: 7426785886169572434, guid: 360613aa1cf52d041897fdb3e4943548, type: 3}
+  - {fileID: 7426785886169572434, guid: b596fcd5ef736f24b8517a511dc69350, type: 3}
+  - {fileID: 7426785886169572434, guid: 43da9a46c05f3164c81fa0e99570d916, type: 3}
+  healthHelp:
+  - 0.4
+  - 0.5
+  - 0.6
+  levelTheme: {fileID: 8300000, guid: f4ad0f36ff6491f4da7254b75e732546, type: 3}

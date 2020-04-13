@@ -147,3 +147,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lifeBonus: 7
+  pickupSound: {fileID: 8300000, guid: 939f3a53655611f45b91501f3119e525, type: 3}
+  bottomSound: {fileID: 0}
+  basketDestroyFX: {fileID: 100004, guid: 3af6f68141914ca43ba39b2403757bd0, type: 3}
+  bottomDestroyFX: {fileID: 0}
